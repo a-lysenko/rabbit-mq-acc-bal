@@ -9,9 +9,11 @@ open
         return conn.createChannel();
     })
     .then(function (ch) {
-        return ch.assertQueue(q).then(function (ok) {
-            return ch.sendToQueue(q, new Buffer('something to do'));
-        });
+        return ch.assertQueue(q)
+            .then(function (ok) {
+                console.log('asserting on publishing. ok', ok);
+                return ch.sendToQueue(q, new Buffer('something to do from First MQ'));
+            });
     })
     .catch(console.warn);
 
@@ -21,13 +23,15 @@ open
         return conn.createChannel();
     })
     .then(function (ch) {
-        return ch.assertQueue(q).then(function (ok) {
-            return ch.consume(q, function (msg) {
-                if (msg !== null) {
-                    console.log(msg.content.toString());
-                    ch.ack(msg);
-                }
+        return ch.assertQueue(q)
+            .then(function (ok) {
+                console.log('asserting on publishing. ok', ok);
+                return ch.consume(q, function (msg) {
+                    if (msg !== null) {
+                        console.log(msg.content.toString());
+                        ch.ack(msg);
+                    }
+                });
             });
-        });
     })
     .catch(console.warn);
