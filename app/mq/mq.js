@@ -4,7 +4,7 @@
     const open = require('amqplib').connect(configuration.amqpURL);
     const mqPublisher = require('./mq-publisher');
 
-    const registerMqConsumer = require('./register-mq-consumer');
+    const mqConsumer = require('./mq-consumer');
 
 
     const createdChannel = open
@@ -16,18 +16,9 @@
             return Promise.reject(err);
         });
 
-    //createdChannel
-    //    .then((channel) => {
-    //        registerMqConsumer({
-    //            channel: channel,
-    //            amqpQueue: configuration.amqpQueue
-    //        })
-    //    })
-    //    .catch(console.warn);
-
     exports.createdChannel = createdChannel;
     exports.publish = mqPublisher(createdChannel, configuration.amqpQueue);
-    exports.consume = registerMqConsumer(createdChannel, configuration.amqpQueue);
+    exports.consume = mqConsumer(createdChannel, configuration.amqpQueue);
 
 })();
 
