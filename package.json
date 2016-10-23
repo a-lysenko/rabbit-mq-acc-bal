@@ -11,5 +11,8 @@
   "dependencies": {
     "amqplib": "^0.4.2",
     "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "bower": "^1.7.9"
   }
 }

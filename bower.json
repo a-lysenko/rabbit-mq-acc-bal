@@ -1,0 +1,20 @@
+{
+  "name": "rabbit-mq-acc-bal",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "a-lysenko <aleksey.lysenko@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/a-lysenko/rabbit-mq-acc-bal",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1"
+  }
+}

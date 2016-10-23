@@ -1,22 +1,46 @@
 (function () {
     module.exports = (createdChannel, amqpQueue) => {
-        function consume(handler) {
-            createdChannel.then((channel) => {
-                return channel.assertQueue(amqpQueue)
-                    .then((ok) => {
-                        console.log('asserting on consumering. ok', ok);
-                        return channel.consume(amqpQueue, (msg) => {
-                            if (msg !== null) {
-                                console.log(msg.content.toString());
-                                channel.ack(msg);
+        const subscribers = {};
+        let channelInstance;
 
-                                handler(msg);
-                            }
-                        });
-                    });
+        createdChannel
+            .then((channel) => {
+                channelInstance = channel;
+                return channel.assertQueue(amqpQueue);
+            })
+            .then((ok) => {
+                console.log('asserting on consumering. ok', ok);
+
+                channelInstance.consume(amqpQueue, (msg) => {
+                    if (msg !== null) {
+                        console.log(msg.content.toString());
+                        channelInstance.ack(msg);
+
+                        Object.keys(subscribers)
+                            .forEach((handlerId) => {
+                                subscribers[handlerId](msg);
+                            })
+                    }
+                });
             });
+
+        function subscribe(handler) {
+            const id = Date.now() + '_' + Math.ceil(Math.random() * 1000);
+            subscribers[id] = handler;
+
+            return id;
+        }
+        function unsubscribe(handlerId) {
+            if (subscribers[handlerId]) {
+                return delete subscribers[handlerId];
+            }
+
+            return false;
         }
 
-        return consume;
+        return {
+            subscribe,
+            unsubscribe
+        };
     }
 })();
