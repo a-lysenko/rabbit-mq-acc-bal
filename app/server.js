@@ -9,10 +9,10 @@ app.use(express.static(__dirname + '/../public'));
 
 const mq = require('./mq/mq');
 
-mq.requestQueue.subscribe((reqMsg) => {
-    console.log('In responseQueue consume handler. msg.content.toString()', reqMsg.content.toString());
-    mq.responseQueue.publish('resent ' + reqMsg.content.toString());
-});
+// mq.requestQueue.subscribe((reqMsg) => {
+//     console.log('In responseQueue consume handler. msg.content.toString()', reqMsg.content.toString());
+//     mq.responseQueue.publish('resent ' + reqMsg.content.toString());
+// });
 
 require('./routes')(app, mq);
 

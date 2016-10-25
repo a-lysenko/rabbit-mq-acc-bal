@@ -6,21 +6,21 @@
         createdChannel
             .then((channel) => {
                 channelInstance = channel;
-                return channel.assertQueue(amqpQueue);
+                return channelInstance.assertQueue(amqpQueue);
             })
             .then((ok) => {
-                console.log('asserting on consumering. ok', ok);
+                console.info('MQ Event. Asserting on consumering in', amqpQueue, 'queue. ok', ok);
 
                 channelInstance.consume(amqpQueue, (msg) => {
-                    if (msg !== null) {
-                        console.log(msg.content.toString());
-                        channelInstance.ack(msg);
-
-                        Object.keys(subscribers)
-                            .forEach((handlerId) => {
-                                subscribers[handlerId](msg);
-                            })
+                    if (msg == null) {
+                        console.error('ERROR!', 'Queue', amqpQueue, 'consuming was canceled.');
                     }
+
+                    channelInstance.ack(msg);
+                    Object.keys(subscribers)
+                        .forEach((handlerId) => {
+                            subscribers[handlerId](msg);
+                        });
                 });
             });
 

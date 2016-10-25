@@ -1,13 +1,17 @@
 (function () {
     module.exports = (createdChannel, amqpQueue) => {
+        let channelInstance;
+
         function publish(message) {
             return createdChannel
                 .then((channel) => {
-                    return channel.assertQueue(amqpQueue)
-                        .then((ok) => {
-                            console.log('asserting on publishing. ok', ok);
-                            return channel.sendToQueue(amqpQueue, Buffer.from(message));
-                        });
+                    channelInstance = channel;
+                    return channelInstance.assertQueue(amqpQueue);
+                })
+                .then((ok) => {
+                    console.info('MQ Event. Asserting on publishing in', amqpQueue, 'queue. ok', ok);
+
+                    return channelInstance.sendToQueue(amqpQueue, Buffer.from(message));
                 });
         }
 
