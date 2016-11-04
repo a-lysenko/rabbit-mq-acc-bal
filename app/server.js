@@ -3,11 +3,12 @@ const app = express();
 
 // set our port
 const port = process.env.PORT || 3000;
+const configuration = require('./configuration');
 
 // set the static files location /public/img will be /img for users
 app.use(express.static(__dirname + '/../public'));
 
-const mq = require('./mq/mq');
+const mq = require('./mq/mq')(configuration);
 
 // mq.requestQueue.subscribe((reqMsg) => {
 //     console.log('In responseQueue consume handler. msg.content.toString()', reqMsg.content.toString());

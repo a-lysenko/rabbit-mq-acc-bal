@@ -1,33 +1,54 @@
-const mq = require('./mq/mq');
+module.exports = function () {
+    const configuration = require('./configuration');
 
-mq.requestQueue.subscribe((reqMsg) => {
-    const res = {
-        error: false,
-        errorDesc: '',
-        data: undefined,
-        reqContent: undefined
-    };
+    const mq = require('./mq/mq')(configuration);
+    const mongoose = require('mongoose');
 
-    if (reqMsg && Buffer.isBuffer(reqMsg.content)) {
-        res.reqContent = reqMsg.content;
-        // Mock:
-        res.data = JSON.parse(reqMsg.content);
-    } else {
-        res.error = true;
-        res.errorDesc = getErrorDesc(reqMsg);
-    }
+    const model = require('./database/model')(mongoose);
 
-    // TODO - implement logic with filling res.data (and include code above in it)
-
-    mq.responseQueue.publish(res);
-
-    function getErrorDesc(reqMsg) {
-        if (reqMsg) {
-            if (!Buffer.isBuffer(reqMsg.content)) {
-                return 'Request message is not a buffer';
-            }
-        } else {
-            return 'Empty request message';
+    // connect to our mongoDB database
+    mongoose.connect(configuration.mLabURL, (error) => {
+        if (error) {
+            console.log(error);
         }
-    }
-});
+    });
+
+    const db = mongoose.connection;
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', (callback) => {
+        console.info('mongoose connection opened');
+
+    });
+
+    mq.requestQueue.subscribe((reqMsg) => {
+        const res = {
+            error: false,
+            errorDesc: '',
+            data: undefined,
+            reqContent: undefined
+        };
+
+        if (reqMsg && Buffer.isBuffer(reqMsg.content)) {
+            res.reqContent = reqMsg.content;
+            // Mock:
+            res.data = JSON.parse(reqMsg.content);
+        } else {
+            res.error = true;
+            res.errorDesc = getErrorDesc(reqMsg);
+        }
+
+        // TODO - implement logic with filling res.data (and include code above in it)
+
+        mq.responseQueue.publish(res);
+
+        function getErrorDesc(reqMsg) {
+            if (reqMsg) {
+                if (!Buffer.isBuffer(reqMsg.content)) {
+                    return 'Request message is not a buffer';
+                }
+            } else {
+                return 'Empty request message';
+            }
+        }
+    });
+};
