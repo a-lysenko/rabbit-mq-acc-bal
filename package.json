@@ -10,7 +10,8 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.4.2",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "mongoose": "^4.6.6"
   },
   "devDependencies": {
     "bower": "^1.7.9"
