@@ -1,4 +1,4 @@
-module.exports = (app, mq) => {
+module.exports = function (app, mq) {
     app.get('/', (req, res) => {
         res.send('hello world');
     });
