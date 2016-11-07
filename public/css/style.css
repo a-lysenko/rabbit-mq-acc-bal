@@ -1,0 +1,102 @@
+.hotel-search-wrapper {
+    display: inline-block;
+}
+
+.hotel-searchbar {
+    display: block;
+    border: 1px solid rebeccapurple;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: rebeccapurple 1px 1px 3px 0;
+}
+
+.hotel-searchbar .hotel-searchbar__header {
+    padding: 0 0 10px;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+    color: rebeccapurple;
+}
+
+.hotel-searchbar .hotel-searchbar__field {
+    padding: 3px 2px;
+    border: 1px solid rebeccapurple;
+    border-radius: 3px;
+    box-shadow: inset rebeccapurple -1px -1px 2px 0px;
+    font-size: 18px;
+    color: rebeccapurple;
+}
+
+.hotel-searchbar .hotel-searchbar__field.hotel-searchbar__field_star-level {
+    padding-right: 3px;
+    padding-left: 10px;
+    width: 50px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.hotel-searchbar .hotel-searchbar__button {
+    padding: 3px 5px;
+    border: 1px solid rebeccapurple;
+    border-radius: 3px;
+    box-shadow: rebeccapurple 1px 1px 2px 0;
+    font-size: 18px;
+    color: rebeccapurple;
+    background-color: snow;
+    outline: none;
+}
+
+.hotel-searchbar .hotel-searchbar__button:hover {
+    background-color: #d6c6e6;
+}
+
+.hotel-searchbar .hotel-searchbar__button:active {
+    box-shadow: inset rebeccapurple 1px 1px 2px 0;
+}
+
+.hotel-searchresults {
+    display: block;
+    margin-top: 10px;
+    border: 1px solid rebeccapurple;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: rebeccapurple 1px 1px 3px 0;
+}
+
+.hotel-searchresults .hotel-searchresults__header {
+    padding: 0 0 10px;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+    color: rebeccapurple;
+}
+
+.hotel-searchresults .hotel-searchresults__collection {
+    list-style: none;
+    margin: 0;
+    -webkit-padding-start: 0;
+    -moz-padding-start: 0;
+}
+
+.hotel-searchresults-item {
+    display: block;
+    margin-top: 15px;
+    height: 100px;
+    box-shadow: rebeccapurple 1px 1px 4px 0;
+}
+
+.hotel-searchresults-item:first-child {
+    margin-top: 0;
+}
+
+.hotel-searchresults-item .hotel-searchresults-item__name {
+
+}
+
+.hotel-searchresults-item .hotel-searchresults-item__desc {
+
+}
+
+.hotel-searchresults-item .hotel-searchresults-item__stars {
+
+}

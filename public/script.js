@@ -1,5 +1,4 @@
-(
-    () => {
+(() => {
         $('#send-message')
             .click(() => {
                 const messageInput = $('#message');
@@ -33,5 +32,6 @@
                 .find('li:last-child')
                 .text(msg);
         }
-    }
-)();
+
+
+    })();

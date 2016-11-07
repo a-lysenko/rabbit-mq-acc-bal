@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Thomash's Book</title>
+
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 <section>
     <input type="text"
-            id="message">
+           id="message">
     <button id="send-message">Send message</button>
 </section>
 
@@ -23,6 +25,63 @@
     <ul id="received-messages-collection">
 
     </ul>
+</section>
+
+<section class="hotel-search-wrapper">
+    <section class="hotel-searchbar">
+        <header class="hotel-searchbar__header">
+            Choose hotel for you own:
+        </header>
+
+        <label>
+            <input type="text"
+                   id="hotel-name"
+                   class="hotel-searchbar__field"
+                   placeholder="Name">
+        </label>
+
+        <label>
+            <input type="text"
+                   id="hotel-desc"
+                   class="hotel-searchbar__field"
+                   placeholder="Description">
+        </label>
+
+
+        <label>
+            <input type="number"
+                   id="star-level"
+                   class="hotel-searchbar__field hotel-searchbar__field_star-level"
+                   min="1"
+                   max="5"
+                   value="3"
+                   placeholder="Star level">
+        </label>
+
+        <button id="get hotels"
+                class="hotel-searchbar__button">
+            Get hotels
+        </button>
+    </section>
+
+    <section class="hotel-searchresults">
+        <div id="hotel-searchresults-amount-of-fonund"
+                class="hotel-searchresults__header">
+            Found 5 items
+        </div>
+
+        <ul class="hotel-searchresults__collection">
+            <li class="hotel-searchresults-item">
+                item 1
+            </li>
+            <li class="hotel-searchresults-item">
+                item 2
+            </li>
+            <li class="hotel-searchresults-item">
+                item 3
+            </li>
+        </ul>
+    </section>
 </section>
 
 
