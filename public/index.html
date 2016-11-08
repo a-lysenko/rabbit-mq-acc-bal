@@ -58,7 +58,7 @@
         </label>
 
         <button id="get-hotels"
-                class="hotel-searchbar__button">
+                class="hotel-searchbar__srch-btn button">
             Get hotels
         </button>
     </section>
@@ -82,25 +82,30 @@
                     eveniet, debitis dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique
                     optio!
                 </div>
-                <div class="hotel-searchresults-item__stars">
-                    <div class="rate rate_5"></div>
+                <div class="hotel-searchresults-item__stars" item-rate="">
+                    <div class="rate rate_5" data-rate="5"></div>
                 </div>
+                <button href="" class="hotel-searchresults-item__details-btn button">
+                    Details
+                </button>
+            </li>
+            <li class="hotel-searchresults-item">
+                <h2 class="hotel-searchresults-item__name" item-name="">Hotel 2</h2>
+                <div class="hotel-searchresults-item__desc" item-desc="">Lorem</div>
+                <div class="hotel-searchresults-item__stars" item-rate=""><div class="rate rate_3" data-rate="3"></div></div>
+                <button href="" class="hotel-searchresults-item__details-btn button">
+                    Details
+                </button>
             </li>
             <li class="hotel-searchresults-item">
                 <h2 class="hotel-searchresults-item__name">
                     Hotel name 1
                 </h2>
-                <div class="hotel-searchresults-item__desc">
-                    No desc
-                </div>
-                <div class="hotel-searchresults-item__stars">
-                    <div class="rate rate_4"></div>
-                </div>
-            </li>
-            <li class="hotel-searchresults-item">
-                <h2 class="hotel-searchresults-item__name">
-                    Hotel name 1
-                </h2>
+                <div class="hotel-searchresults-item__desc" item-desc="">Lorem ipsum</div>
+                <div class="hotel-searchresults-item__stars" item-rate=""><div class="rate rate_5" data-rate="5"></div></div>
+                <button href="" class="hotel-searchresults-item__details-btn button">
+                    Details
+                </button>
             </li>
         </ul>
     </section>
@@ -115,13 +120,17 @@
             <>
         </h2>
         <div class="hotel-searchresults-item__desc"
-            item-desc="">
+             item-desc="">
             <>
         </div>
         <div class="hotel-searchresults-item__stars"
-            item-rate="">
+             item-rate="">
             No rate
         </div>
+        <button href=""
+           class="hotel-searchresults-item__details-btn button">
+            Details
+        </button>
     </li>
 
     <div id="template-rate">
