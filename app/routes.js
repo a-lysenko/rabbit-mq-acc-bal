@@ -51,16 +51,19 @@ module.exports = function (app, mq) {
 
         res.status(200).json([
             {
+                id: 'id_01',
                 name: 'Hotel 1',
                 description: 'Lorem',
                 rate: 3
             },
             {
+                id: 'id_02',
                 name: 'Hotel 2',
                 description: 'Lorem',
                 rate: 3
             },
             {
+                id: 'id_03',
                 name: 'Hotel 1-2-3',
                 description: 'Lorem ipsum',
                 rate: 5
