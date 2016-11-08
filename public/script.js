@@ -1,37 +1,37 @@
 (() => {
-        $('#send-message')
-            .click(() => {
-                const messageInput = $('#message');
-                const messageToSend = messageInput.val();
+    $('#send-message')
+        .click(() => {
+            const messageInput = $('#message');
+            const messageToSend = messageInput.val();
 
-                if (messageToSend) {
-                    $.get('/new-one', {
-                        message: messageToSend
-                    })
-                        .done((response) => {
-                            const receivedMsg = response.msg;
-                            writeSentMessageToCollection(messageToSend);
-                            writeReceivedMessageToCollection(receivedMsg);
+            if (messageToSend) {
+                $.get('/new-one', {
+                    message: messageToSend
+                })
+                    .done((response) => {
+                        const receivedMsg = response.msg;
+                        writeSentMessageToCollection(messageToSend);
+                        writeReceivedMessageToCollection(receivedMsg);
 
-                            messageInput.val('');
-                        });
-                }
-            });
+                        messageInput.val('');
+                    });
+            }
+        });
 
-        function writeSentMessageToCollection(msg) {
-            writeMessageToCollection('#sent-messages-collection', msg);
-        }
+    function writeSentMessageToCollection(msg) {
+        writeMessageToCollection('#sent-messages-collection', msg);
+    }
 
-        function writeReceivedMessageToCollection(msg) {
-            writeMessageToCollection('#received-messages-collection', msg);
-        }
+    function writeReceivedMessageToCollection(msg) {
+        writeMessageToCollection('#received-messages-collection', msg);
+    }
 
-        function writeMessageToCollection(idElem, msg) {
-            $(idElem)
-                .append('<li></li>')
-                .find('li:last-child')
-                .text(msg);
-        }
+    function writeMessageToCollection(idElem, msg) {
+        $(idElem)
+            .append('<li></li>')
+            .find('li:last-child')
+            .text(msg);
+    }
 
 
     // hotel searchbar
@@ -102,7 +102,7 @@
 
                 function updateSearchresultsCollection(hotels) {
                     const collection = $('#hotel-searchresults-collection');
-                    const itemTemplate =  $('#template-collection #template-hotel-searchresults-item');
+                    const itemTemplate = $('#template-collection #template-hotel-searchresults-item');
 
                     collection.empty();
                     hotels.forEach((hotel) => {
@@ -137,4 +137,4 @@
         });
 
 
-    })();
+})();
