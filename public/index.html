@@ -27,7 +27,7 @@
     </ul>
 </section>
 
-<section class="hotel-search-wrapper">
+<section class="section-wrapper">
     <section class="hotel-searchbar">
         <header class="hotel-searchbar__header">
             Choose hotel for you own:
@@ -82,7 +82,7 @@
                     eveniet, debitis dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique
                     optio!
                 </div>
-                <div class="hotel-searchresults-item__stars" item-rate="">
+                <div class="hotel-searchresults-item__rate" item-rate="">
                     <div class="rate rate_5" data-rate="5"></div>
                 </div>
                 <button href="" class="hotel-searchresults-item__details-btn button">
@@ -91,6 +91,29 @@
             </li>
         </ul>
     </section>
+</section>
+
+<section class="section-wrapper hotel-card">
+    <div id="hotel-card-wrapper"
+         class="hotel-card-wrapper">
+        <div class="hotel-card__rate">
+            <div class="rate rate_3"></div>
+        </div>
+        <span class="hotel-card__id">id 174789</span>
+        <header class="hotel-card__name">Hotel name name</header>
+        <div class="hotel-card__desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </div>
+    </div>
+
+    <div id="hotel-card-no-hotel"
+         class="hotel-card__no-hotel">
+    </div>
 </section>
 
 <section id="template-collection"
@@ -105,12 +128,12 @@
              item-desc="">
             <>
         </div>
-        <div class="hotel-searchresults-item__stars"
+        <div class="hotel-searchresults-item__rate"
              item-rate="">
             No rate
         </div>
         <button href=""
-           class="hotel-searchresults-item__details-btn button">
+                class="hotel-searchresults-item__details-btn button">
             Details
         </button>
     </li>

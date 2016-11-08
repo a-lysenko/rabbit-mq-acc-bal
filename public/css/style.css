@@ -24,11 +24,18 @@
     box-shadow: inset rebeccapurple 1px 1px 2px 0;
 }
 
-.hotel-search-wrapper {
-    display: inline-block;
+.section-wrapper {
+    float: left;
     min-width: 650px;
-    max-width: 50%;
+    max-width: 45%;
+    margin-left: 10px;
+    box-sizing: border-box;
 }
+
+.section-wrapper:first-child {
+    margin-left: 0;
+}
+
 
 .hotel-searchbar {
     display: block;
@@ -127,7 +134,7 @@
     color: dimgrey;
 }
 
-.hotel-searchresults-item .hotel-searchresults-item__stars {
+.hotel-searchresults-item .hotel-searchresults-item__rate {
     float: left;
 }
 
@@ -145,6 +152,47 @@
 .hotel-searchresults-item .hotel-searchresults-item__details-btn:active {
     box-shadow: inset rebeccapurple 1px 1px 2px 0;
 }
+
+/*hotel-card*/
+.hotel-card {
+    display: block;
+    position: relative;
+    border: 1px solid rebeccapurple;
+    border-radius: 5px;
+    padding: 10px 20px;
+    box-shadow: rebeccapurple 1px 1px 3px 0;
+}
+
+.hotel-card .hotel-card__name {
+    display: block;
+    padding: 0 0 10px;
+    font-size: 22px;
+    font-family: Arial;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: dimgrey;
+}
+
+.hotel-card .hotel-card__id {
+    display: block;
+    text-align: right;
+    text-decoration: underline;
+    color: darkgrey;
+}
+
+.hotel-card .hotel-card__desc {
+    display: block;
+    min-height: 1.2em;
+    line-height: 1.2em;
+    padding: 10px 0;
+    box-sizing: content-box;
+    color: dimgrey;
+}
+
+.hotel-card .hotel-card__rate {
+    float: left;
+}
+
 
 .rate {
     display: block;
