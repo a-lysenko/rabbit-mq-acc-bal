@@ -1,4 +1,6 @@
 (() => {
+    getHotels();
+
     $('#send-message')
         .click(() => {
             const messageInput = $('#message');
@@ -36,105 +38,105 @@
 
     // hotel searchbar
     $('#get-hotels')
-        .click(() => {
-            const nameInput = $('#hotel-name');
-            const descInput = $('#hotel-desc');
-            const rateInput = $('#hotel-rate');
+        .click(getHotels);
 
-            const hotelFilter = {};
-            updateFilter(hotelFilter, {
-                name: 'name',
-                value: nameInput.val()
-            });
-            updateFilter(hotelFilter, {
-                name: 'desc',
-                value: descInput.val()
-            }, {
-                includes: true
-            });
-            updateFilter(hotelFilter, {
-                name: 'rate',
-                value: rateInput.val()
-            }, {
-                type: 'number'
-            });
+    function getHotels() {
+        const nameInput = $('#hotel-name');
+        const descInput = $('#hotel-desc');
+        const rateInput = $('#hotel-rate');
 
-            $.get('/get_hotels', {
-                filter: hotelFilter
-            })
-                .done(updateSearchresults);
+        const hotelFilter = {};
+        updateFilter(hotelFilter, {
+            name: 'name',
+            value: nameInput.val()
+        });
+        updateFilter(hotelFilter, {
+            name: 'desc',
+            value: descInput.val()
+        }, {
+            includes: true
+        });
+        updateFilter(hotelFilter, {
+            name: 'rate',
+            value: rateInput.val()
+        }, {
+            type: 'number'
+        });
 
-            function updateFilter(filter, item, options) {
-                options = options || {};
-                options.includes = options.includes || false;
+        $.get('/get_hotels', {
+            filter: hotelFilter
+        })
+            .done(updateSearchresults);
 
-                let value = item.value;
+        function updateFilter(filter, item, options) {
+            options = options || {};
+            options.includes = options.includes || false;
 
-                if (options.type === 'number') {
-                    value = parseInt(value) || 0;
+            let value = item.value;
+
+            if (options.type === 'number') {
+                value = parseInt(value) || 0;
+            }
+
+            if (value || options.letEmpty) {
+                filter[item.name] = {
+                    value: item.value,
+                    includes: options.includes
                 }
+            }
+        }
 
-                if (value || options.letEmpty) {
-                    filter[item.name] = {
-                        value: item.value,
-                        includes: options.includes
-                    }
+        function updateSearchresults(hotels) {
+            updatedSearchresultsHeader(hotels.length);
+
+            updateSearchresultsCollection(hotels);
+
+            function updatedSearchresultsHeader(amountOfHotels) {
+                const headerNoFound = 'Nothing found';
+                const searchresultsHeader = $('#hotel-searchresults-amount-of-found');
+
+                const plrTail = (amountOfHotels === 1) ? '' : 's';
+
+                if (amountOfHotels) {
+                    searchresultsHeader.text(`Found ${amountOfHotels} hotel${plrTail}`);
+                } else {
+                    searchresultsHeader.text(headerNoFound);
                 }
             }
 
-            function updateSearchresults(hotels) {
-                updatedSearchresultsHeader(hotels.length);
+            function updateSearchresultsCollection(hotels) {
+                const collection = $('#hotel-searchresults-collection');
+                const itemTemplate = $('#template-collection #template-hotel-searchresults-item');
 
-                updateSearchresultsCollection(hotels);
+                collection.empty();
+                hotels.forEach((hotel) => {
+                    const item = itemTemplate.clone();
+                    item.removeAttr('id');
 
-                function updatedSearchresultsHeader(amountOfHotels) {
-                    const headerNoFound = 'Nothing found';
-                    const searchresultsHeader = $('#hotel-searchresults-amount-of-found');
+                    fillHotelCard(item, hotel);
 
-                    const plrTail = (amountOfHotels === 1) ? '' : 's';
+                    collection.append(item);
+                });
 
-                    if (amountOfHotels) {
-                        searchresultsHeader.text(`Found ${amountOfHotels} hotel${plrTail}`);
-                    } else {
-                        searchresultsHeader.text(headerNoFound);
-                    }
-                }
+                function fillHotelCard(hotelCard, hotel) {
+                    const nameElem = hotelCard.find('[item-name]');
+                    const descElem = hotelCard.find('[item-desc]');
+                    const rateElem = hotelCard.find('[item-rate]');
 
-                function updateSearchresultsCollection(hotels) {
-                    const collection = $('#hotel-searchresults-collection');
-                    const itemTemplate = $('#template-collection #template-hotel-searchresults-item');
+                    nameElem.text(hotel.name);
+                    descElem.text(hotel.description);
 
-                    collection.empty();
-                    hotels.forEach((hotel) => {
-                        const item = itemTemplate.clone();
-                        item.removeAttr('id');
+                    fillRate(rateElem, hotel.rate);
 
-                        fillHotelCard(item, hotel);
-
-                        collection.append(item);
-                    });
-
-                    function fillHotelCard(hotelCard, hotel) {
-                        const nameElem = hotelCard.find('[item-name]');
-                        const descElem = hotelCard.find('[item-desc]');
-                        const rateElem = hotelCard.find('[item-rate]');
-
-                        nameElem.text(hotel.name);
-                        descElem.text(hotel.description);
-
-                        fillRate(rateElem, hotel.rate);
-
-                        function fillRate(elem, rate) {
-                            const rateElem = $(`#template-collection #template-rate [data-rate=${rate}]`);
-                            if (rateElem) {
-                                elem.empty();
-                                elem.append(rateElem.clone());
-                            }
+                    function fillRate(elem, rate) {
+                        const rateElem = $(`#template-collection #template-rate [data-rate=${rate}]`);
+                        if (rateElem) {
+                            elem.empty();
+                            elem.append(rateElem.clone());
                         }
                     }
                 }
             }
-        });
-
-
+        }
+    }
 })();

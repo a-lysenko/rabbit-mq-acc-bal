@@ -53,7 +53,11 @@ module.exports = function (app, mq) {
             {
                 id: 'id_01',
                 name: 'Hotel 1',
-                description: 'Lorem',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ' +
+                'cupiditate totam quidem? Cumque praesentium incidunt cum quis reprehenderit ' +
+                'aspernatur velit aut recusandae alias similique aliquid, nulla accusamus officiis ' +
+                'repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil eveniet, debitis ' +
+                'dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique optio!',
                 rate: 3
             },
             {
@@ -65,7 +69,11 @@ module.exports = function (app, mq) {
             {
                 id: 'id_03',
                 name: 'Hotel 1-2-3',
-                description: 'Lorem ipsum',
+                description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ' +
+                'cupiditate totam quidem? Cumque praesentium incidunt cum quis reprehenderit ' +
+                'aspernatur velit aut recusandae alias similique aliquid, nulla accusamus officiis ' +
+                'repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil eveniet, debitis ' +
+                'dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique optio!',
                 rate: 5
             }
         ]);
