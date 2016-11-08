@@ -81,7 +81,7 @@
 .hotel-searchresults-item {
     display: block;
     margin-top: 15px;
-    height: 100px;
+    /*height: 100px;*/
     padding: 10px 20px;
     box-shadow: rebeccapurple 1px 1px 4px 0;
 }
@@ -103,7 +103,8 @@
 
 .hotel-searchresults-item .hotel-searchresults-item__desc {
     display: block;
-    height: 2.4em;
+    min-height: 1.2em;
+    max-height: 2.4em;
     line-height: 1.2em;
     margin: 10px 0;
     box-sizing: content-box;
@@ -118,33 +119,34 @@
 .star-rate {
     display: block;
     height: 32px;
+    width: 32px;
     background-repeat: repeat-x;
 }
 
 .star-rate.star-rate_full {
-    background: url("img/star_full_32.png");
+    background: url("../img/star_full_32.png");
 }
 
 .star-rate.star-rate_empty {
-    background: url("img/star_empty_32.png");
+    background: url("../img/star_empty_32.png");
 }
 
-.star-rate .star-rate_1 {
-
+.star-rate.star-rate_1 {
+    width: 32px;
 }
 
-.star-rate .star-rate_2 {
-
+.star-rate.star-rate_2 {
+    width: 64px;
 }
 
-.star-rate .star-rate_3 {
-
+.star-rate.star-rate_3 {
+    width: 96px;
 }
 
-.star-rate .star-rate_4 {
-
+.star-rate.star-rate_4 {
+    width: 128px;
 }
 
-.star-rate .star-rate_5 {
-    width: 150px;
+.star-rate.star-rate_5 {
+    width: 160px;
 }
