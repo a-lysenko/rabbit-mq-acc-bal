@@ -27,26 +27,45 @@ module.exports = function (app, mq) {
     });
 
     app.get('/get_hotels', (req, res) => {
-        const currentDate = Date.now();
-        mq.requestQueue.publish('Data from new one on ' + currentDate)
-            .then((bufferIsAllowed) => {
-                if (!bufferIsAllowed) {
-                    console.log('Error! Queue buffer is full!');
+        // TODO - uncomment this and remove a mock below
+        // const currentDate = Date.now();
+        // mq.requestQueue.publish('Data from new one on ' + currentDate)
+        //     .then((bufferIsAllowed) => {
+        //         if (!bufferIsAllowed) {
+        //             console.log('Error! Queue buffer is full!');
+        //
+        //             res.status(503).send('Queue buffer is full!');
+        //         }
+        //     });
+        //
+        // const handlerId = mq.responseQueue.subscribe((msg) => {
+        //     //console.log('Gotten msg', msg, 'type', typeof msg);
+        //     //console.log('countResSent', countResSent);
+        //     res.status(200).json({
+        //         msg: msg.content.toString()
+        //     });
+        //
+        //     console.log('handlerId', handlerId);
+        //     mq.responseQueue.unsubscribe(handlerId);
+        // })
 
-                    res.status(503).send('Queue buffer is full!');
-                }
-            });
-
-        const handlerId = mq.responseQueue.subscribe((msg) => {
-            //console.log('Gotten msg', msg, 'type', typeof msg);
-            //console.log('countResSent', countResSent);
-            res.status(200).json({
-                msg: msg.content.toString()
-            });
-
-            console.log('handlerId', handlerId);
-            mq.responseQueue.unsubscribe(handlerId);
-        })
+        res.status(200).json([
+            {
+                name: 'Hotel 1',
+                description: 'Lorem',
+                rate: 3
+            },
+            {
+                name: 'Hotel 2',
+                description: 'Lorem',
+                rate: 3
+            },
+            {
+                name: 'Hotel 1-2-3',
+                description: 'Lorem ipsum',
+                rate: 5
+            }
+        ]);
     });
 
     app.post('/add_hotel', (req, res) => {

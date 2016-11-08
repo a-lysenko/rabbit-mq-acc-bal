@@ -1,5 +1,11 @@
+.template-collection {
+    display: none;
+}
+
 .hotel-search-wrapper {
     display: inline-block;
+    min-width: 650px;
+    max-width: 50%;
 }
 
 .hotel-searchbar {
@@ -27,7 +33,7 @@
     color: rebeccapurple;
 }
 
-.hotel-searchbar .hotel-searchbar__field.hotel-searchbar__field_star-level {
+.hotel-searchbar .hotel-searchbar__field.hotel-searchbar__field_star-rate {
     padding-right: 3px;
     padding-left: 10px;
     width: 50px;
@@ -116,37 +122,34 @@
 
 }
 
-.star-rate {
+.rate {
     display: block;
     height: 32px;
     width: 32px;
+    background: url("../img/star_full_32.png");
     background-repeat: repeat-x;
 }
 
-.star-rate.star-rate_full {
-    background: url("../img/star_full_32.png");
-}
-
-.star-rate.star-rate_empty {
+.rate.rate_empty {
     background: url("../img/star_empty_32.png");
 }
 
-.star-rate.star-rate_1 {
+.rate.rate_1 {
     width: 32px;
 }
 
-.star-rate.star-rate_2 {
+.rate.rate_2 {
     width: 64px;
 }
 
-.star-rate.star-rate_3 {
+.rate.rate_3 {
     width: 96px;
 }
 
-.star-rate.star-rate_4 {
+.rate.rate_4 {
     width: 128px;
 }
 
-.star-rate.star-rate_5 {
+.rate.rate_5 {
     width: 160px;
 }

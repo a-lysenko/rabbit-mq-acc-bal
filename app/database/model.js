@@ -9,7 +9,7 @@ function createModel(mongoose) {
             type: String,
             maxlength: 250
         },
-        starLevel: {
+        rate: {
             type: Number,
             min: 1,
             max: 5

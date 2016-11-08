@@ -47,39 +47,43 @@
                    placeholder="Description">
         </label>
 
-
         <label>
             <input type="number"
-                   id="star-level"
-                   class="hotel-searchbar__field hotel-searchbar__field_star-level"
+                   id="hotel-rate"
+                   class="hotel-searchbar__field hotel-searchbar__field_star-rate"
                    min="1"
                    max="5"
                    value="3"
-                   placeholder="Star level">
+                   placeholder="Star rate">
         </label>
 
-        <button id="get hotels"
+        <button id="get-hotels"
                 class="hotel-searchbar__button">
             Get hotels
         </button>
     </section>
 
     <section class="hotel-searchresults">
-        <div id="hotel-searchresults-amount-of-fonund"
-                class="hotel-searchresults__header">
+        <div id="hotel-searchresults-amount-of-found"
+             class="hotel-searchresults__header">
             Found 5 items
         </div>
 
-        <ul class="hotel-searchresults__collection">
+        <ul id="hotel-searchresults-collection"
+            class="hotel-searchresults__collection">
             <li class="hotel-searchresults-item">
                 <h2 class="hotel-searchresults-item__name">
                     Hotel name 1
                 </h2>
                 <div class="hotel-searchresults-item__desc">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci cupiditate totam quidem? Cumque praesentium incidunt cum quis reprehenderit aspernatur velit aut recusandae alias similique aliquid, nulla accusamus officiis repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil eveniet, debitis dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique optio!
+                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci cupiditate totam quidem? Cumque
+                    praesentium incidunt cum quis reprehenderit aspernatur velit aut recusandae alias similique aliquid,
+                    nulla accusamus officiis repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil
+                    eveniet, debitis dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique
+                    optio!
                 </div>
                 <div class="hotel-searchresults-item__stars">
-                    <div class="star-rate star-rate_full star-rate_5"></div>
+                    <div class="rate rate_5"></div>
                 </div>
             </li>
             <li class="hotel-searchresults-item">
@@ -90,7 +94,7 @@
                     No desc
                 </div>
                 <div class="hotel-searchresults-item__stars">
-                    <div class="star-rate star-rate_full star-rate_4"></div>
+                    <div class="rate rate_4"></div>
                 </div>
             </li>
             <li class="hotel-searchresults-item">
@@ -102,6 +106,37 @@
     </section>
 </section>
 
+<section id="template-collection"
+         class="template-collection">
+    <li id="template-hotel-searchresults-item"
+        class="hotel-searchresults-item">
+        <h2 class="hotel-searchresults-item__name"
+            item-name="">
+            <>
+        </h2>
+        <div class="hotel-searchresults-item__desc"
+            item-desc="">
+            <>
+        </div>
+        <div class="hotel-searchresults-item__stars"
+            item-rate="">
+            No rate
+        </div>
+    </li>
+
+    <div id="template-rate">
+        <div class="rate rate_1"
+             data-rate="1"></div>
+        <div class="rate rate_2"
+             data-rate="2"></div>
+        <div class="rate rate_3"
+             data-rate="3"></div>
+        <div class="rate rate_4"
+             data-rate="4"></div>
+        <div class="rate rate_5"
+             data-rate="5"></div>
+    </div>
+</section>
 
 <script src="libs/jquery/dist/jquery.js"></script>
 <script src="script.js"></script>
