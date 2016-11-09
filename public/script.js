@@ -1,5 +1,6 @@
 (() => {
-    getHotels();
+    // getHotels();
+    showDefaultHotelCard();
 
     $('#send-message')
         .click(() => {
@@ -122,21 +123,69 @@
                     const nameElem = hotelCard.find('[item-name]');
                     const descElem = hotelCard.find('[item-desc]');
                     const rateElem = hotelCard.find('[item-rate]');
+                    const detailsBtnElem = hotelCard.find('[item-id]');
 
                     nameElem.text(hotel.name);
                     descElem.text(hotel.description);
 
                     fillRate(rateElem, hotel.rate);
 
-                    function fillRate(elem, rate) {
-                        const rateElem = $(`#template-collection #template-rate [data-rate=${rate}]`);
-                        if (rateElem) {
-                            elem.empty();
-                            elem.append(rateElem.clone());
-                        }
-                    }
+                    detailsBtnElem.attr('item-id', hotel.id);
+                    detailsBtnElem.click((event) => {
+                        const itemId = $(event.target).attr('item-id');
+                        getHotel(itemId);
+                    });
                 }
             }
+        }
+    }
+
+    function getHotel(id) {
+        $.get(`/get_hotel/${id}`)
+            .done(updateCard);
+
+        function updateCard(hotel) {
+            if (hotel.id) {
+                showHotelCard();
+                showHotel(hotel);
+            } else {
+                showDefaultHotelCard();
+            }
+
+            function showHotel(hotel) {
+                const hotelCard = $('#hotel-card-wrapper');
+
+                const nameElem = hotelCard.find('[hotel-name]');
+                const descElem = hotelCard.find('[hotel-desc]');
+                const rateElem = hotelCard.find('[hotel-rate]');
+                const idElem = hotelCard.find('[hotel-id]');
+
+                nameElem.text(hotel.name);
+                descElem.text(hotel.description);
+
+                fillRate(rateElem, hotel.rate);
+
+                idElem.text(hotel.id);
+                idElem.attr('hotel-id', hotel.id);
+            }
+        }
+    }
+
+    function showDefaultHotelCard() {
+        $('#hotel-card-wrapper').hide();
+        $('#hotel-card-no-hotel').show();
+    }
+
+    function showHotelCard() {
+        $('#hotel-card-wrapper').show();
+        $('#hotel-card-no-hotel').hide();
+    }
+
+    function fillRate(elem, rate) {
+        const rateElem = $(`#template-collection #template-rate [data-rate=${rate}]`);
+        if (rateElem) {
+            elem.empty();
+            elem.append(rateElem.clone());
         }
     }
 })();
