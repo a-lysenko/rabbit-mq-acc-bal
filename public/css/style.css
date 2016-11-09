@@ -16,12 +16,24 @@
     outline: none;
 }
 
+.button.button_inverted {
+    color: snow;
+    background-color: #9966cc;
+}
+
 .button:hover {
     background-color: #d6c6e6;
 }
 
 .button:active {
     box-shadow: inset rebeccapurple 1px 1px 2px 0;
+}
+
+.section-border {
+    display: block;
+    border: 1px solid rebeccapurple;
+    border-radius: 5px;
+    box-shadow: rebeccapurple 1px 1px 3px 0;
 }
 
 .section-wrapper {
@@ -32,17 +44,41 @@
     box-sizing: border-box;
 }
 
+.section-wrapper.section-wrapper_clear {
+    clear: both;
+}
+
 .section-wrapper:first-child {
     margin-left: 0;
 }
 
-
-.hotel-searchbar {
-    display: block;
-    border: 1px solid rebeccapurple;
-    border-radius: 5px;
+/*create hotel*/
+.create-hotel {
+    margin: 0 auto 20px;
+    width: 50%;
     padding: 10px 20px;
-    box-shadow: rebeccapurple 1px 1px 3px 0;
+    box-sizing: border-box;
+}
+
+.create-hotel .create-hotel__create-btn {
+    width: 100%;
+    padding: 20px 0;
+}
+
+.create-hotel .create-hotel__header{
+    display: block;
+    padding: 20px 0 0;
+    font-size: 20px;
+    font-family: Arial;
+    font-weight: bold;
+    color: rebeccapurple;
+    text-transform: uppercase;
+}
+
+
+/*hotel searchbar*/
+.hotel-searchbar {
+    padding: 10px 20px;
 }
 
 .hotel-searchbar .hotel-searchbar__header {
@@ -75,12 +111,8 @@
 }
 
 .hotel-searchresults {
-    display: block;
     margin-top: 10px;
-    border: 1px solid rebeccapurple;
-    border-radius: 5px;
     padding: 10px 20px;
-    box-shadow: rebeccapurple 1px 1px 3px 0;
 }
 
 .hotel-searchresults .hotel-searchresults__header {
@@ -140,30 +172,15 @@
 
 .hotel-searchresults-item .hotel-searchresults-item__details-btn {
     float: right;
-    color: snow;
-    background-color: #9966cc;
-}
-
-/* overrides style of weaker class if is not declared anything*/
-.hotel-searchresults-item .hotel-searchresults-item__details-btn:hover {
-    background-color: #d6c6e6;
-}
-
-.hotel-searchresults-item .hotel-searchresults-item__details-btn:active {
-    box-shadow: inset rebeccapurple 1px 1px 2px 0;
 }
 
 /*hotel-card*/
 .hotel-card {
-    display: block;
-    position: relative;
-    border: 1px solid rebeccapurple;
-    border-radius: 5px;
     min-height: 290px;
-    box-shadow: rebeccapurple 1px 1px 3px 0;
 }
 
 .hotel-card .hotel-card-wrapper {
+    box-sizing: border-box;
     min-height: inherit;
     padding: 10px 20px;
     background: linear-gradient(to bottom, snow, #d9c9e9 30px, snow, #d6c6e6);
