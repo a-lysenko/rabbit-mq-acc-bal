@@ -95,13 +95,21 @@
 
 <section class="section-wrapper hotel-card">
     <div id="hotel-card-wrapper"
-         class="hotel-card-wrapper">
-        <div class="hotel-card__rate">
+         class="hotel-card-wrapper"
+         hidden>
+        <div class="hotel-card__rate"
+            hotel-rate="">
             <div class="rate rate_3"></div>
         </div>
-        <span class="hotel-card__id">id 174789</span>
-        <header class="hotel-card__name">Hotel name name</header>
-        <div class="hotel-card__desc">
+        <span class="hotel-card__id">
+            id <span hotel-id="">no id</span>
+        </span>
+        <header class="hotel-card__name"
+                hotel-name="">
+            Hotel name name
+        </header>
+        <div class="hotel-card__desc"
+            hotel-desc="">
             Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
             tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
             quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -133,7 +141,8 @@
             No rate
         </div>
         <button href=""
-                class="hotel-searchresults-item__details-btn button">
+                class="hotel-searchresults-item__details-btn button"
+                item-id="">
             Details
         </button>
     </li>
