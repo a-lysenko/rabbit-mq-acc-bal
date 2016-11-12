@@ -1,6 +1,7 @@
 (() => {
     // getHotels();
     showDefaultHotelCard();
+    hideNewHotelForm(false);
 
     $('#send-message')
         .click(() => {
@@ -187,5 +188,47 @@
             elem.empty();
             elem.append(rateElem.clone());
         }
+    }
+
+    $('#create-hotel-create-btn')
+        .click(showNewHotelForm);
+
+    $('#new-hotel-create-btn')
+        .click(createNewHotel);
+
+    $('#new-hotel-cancel-btn')
+        .click(hideNewHotelForm);
+
+    function hideNewHotelForm(animate = true) {
+        if (animate) {
+            $('#new-hotel-wrapper').slideUp();
+        } else {
+            $('#new-hotel-wrapper').hide();
+        }
+    }
+
+    function showNewHotelForm() {
+        $('#new-hotel-wrapper').slideDown();
+    }
+
+    function clearNewHotelForm() {
+        $('#new-hotel-name').val('');
+        $('#new-hotel-desc').val('');
+    }
+
+    function createNewHotel() {
+        const name = $('#new-hotel-name').val();
+        const desc = $('#new-hotel-desc').val();
+        const rate = 1;
+
+        $.post('/add_hotel', {
+            name,
+            desc,
+            rate
+        })
+            .done(() => {
+                hideNewHotelForm();
+                clearNewHotelForm();
+            });
     }
 })();

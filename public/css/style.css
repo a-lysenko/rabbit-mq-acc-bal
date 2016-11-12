@@ -33,6 +33,15 @@ body {
     box-shadow: inset rebeccapurple 1px 1px 2px 0;
 }
 
+.field {
+    padding: 3px 2px;
+    border: 1px solid rebeccapurple;
+    border-radius: 3px;
+    box-shadow: inset rebeccapurple -1px -1px 2px 0px;
+    font-size: 18px;
+    color: rebeccapurple;
+}
+
 .section-border {
     display: block;
     border: 1px solid rebeccapurple;
@@ -87,13 +96,51 @@ body {
     top: 0;
     left: 0;
     z-index: 998;
-    background-color: rgba(180, 180, 180, 0.8);
+    background-color: rgba(214,198,230, 0.9);
 }
 
 .new-hotel {
-    position: fixed;
-    transform: translate(50%, 50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    background-color: snow;
     z-index: 999;
+}
+
+.new-hotel .new-hotel__field {
+    display: block;
+    width: 300px;
+    font-family: Arial;
+}
+
+.new-hotel .new-hotel__field.new-hotel__field_desc {
+    margin-top: 10px;
+    height: 5em;
+    line-height: 1.2em;
+    overflow: hidden;
+}
+
+.new-hotel .new-hotel__rate {
+    display: block;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.new-hotel .new-hotel__rate-item {
+    float: left;
+}
+
+.new-hotel .new-hotel__btn-panel {
+    display: block;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.new-hotel .new-hotel__button {
+    float: right;
+    margin-left: 10px;
 }
 
 /*hotel searchbar*/
@@ -109,14 +156,7 @@ body {
     color: rebeccapurple;
 }
 
-.hotel-searchbar .hotel-searchbar__field {
-    padding: 3px 2px;
-    border: 1px solid rebeccapurple;
-    border-radius: 3px;
-    box-shadow: inset rebeccapurple -1px -1px 2px 0px;
-    font-size: 18px;
-    color: rebeccapurple;
-}
+.hotel-searchbar .hotel-searchbar__field {}
 
 .hotel-searchbar .hotel-searchbar__field.hotel-searchbar__field_star-rate {
     padding-right: 3px;
@@ -250,6 +290,7 @@ body {
 
 /* rate */
 .rate {
+    position: relative;
     display: block;
     height: 32px;
     width: 32px;
@@ -278,5 +319,42 @@ body {
 }
 
 .rate.rate_5 {
+    width: 160px;
+}
+
+.rate.rate_active:hover::after {
+    content: '';
+    position: absolute;
+    background: url("../img/star_full_32.png");
+    width: 32px;
+    height: 32px;
+}
+
+.rate.rate_active:first-child:hover::after {
+    content: '';
+    width: 32px;
+}
+
+.rate.rate_active:nth-child(2):hover::after {
+    content: '';
+    left: -32px;
+    width: 64px;
+}
+
+.rate.rate_active:nth-child(3):hover::after {
+    content: '';
+    left: -64px;
+    width: 96px;
+}
+
+.rate.rate_active:nth-child(4):hover::after {
+    content: '';
+    left: -96px;
+    width: 128px;
+}
+
+.rate.rate_active:nth-child(5):hover::after {
+    content: '';
+    left: -128px;
     width: 160px;
 }
