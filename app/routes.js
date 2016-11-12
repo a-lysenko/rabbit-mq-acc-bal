@@ -69,7 +69,10 @@ module.exports = function (app, mq) {
 
     app.post('/add_hotel', (req, res) => {
         const currentDate = Date.now();
-        mq.requestQueue.publish('Data from new one on ' + currentDate)
+        mq.requestQueue.publish({
+            action: 'save',
+            data: req.body
+        })
             .then((bufferIsAllowed) => {
                 if (!bufferIsAllowed) {
                     console.log('Error! Queue buffer is full!');
@@ -79,8 +82,7 @@ module.exports = function (app, mq) {
             });
 
         const handlerId = mq.responseQueue.subscribe((msg) => {
-            //console.log('Gotten msg', msg, 'type', typeof msg);
-            //console.log('countResSent', countResSent);
+            console.info('Response on route "add_hotel". Called to response with message', msg);
             res.status(200).json({
                 msg: msg.content.toString()
             });
