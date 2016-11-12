@@ -8,7 +8,7 @@ module.exports = (createdChannel, amqpQueue) => {
                 return channelInstance.assertQueue(amqpQueue);
             })
             .then((ok) => {
-                console.info('MQ Event. Asserting on publishing in', amqpQueue, 'queue. ok', ok);
+                console.info('MQ Event. Asserting on publishing in', amqpQueue, 'queue. ok.queue:', ok.queue);
                 console.info('\t with message:', message);
 
                 const stringifiedMsg = JSON.stringify(message);
