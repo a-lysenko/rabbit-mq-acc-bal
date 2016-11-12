@@ -20,16 +20,17 @@ module.exports = function () {
 
     });
 
+    console.info('Server MQ. Subscribed on defined requestQueue.');
     mq.requestQueue.subscribe((reqMsg) => {
         const res = {
             error: false,
             errorDesc: '',
-            data: undefined,
-            reqContent: undefined
+            data: undefined
         };
 
+        console.log('Process request queue.');
+
         if (reqMsg && Buffer.isBuffer(reqMsg.content)) {
-            res.reqContent = reqMsg.content;
             // Mock:
             res.data = JSON.parse(reqMsg.content);
         } else {
@@ -39,6 +40,7 @@ module.exports = function () {
 
         // TODO - implement logic with filling res.data (and include code above in it)
 
+        console.info('Server MQ. Publishing into responseQueue message:', res);
         mq.responseQueue.publish(res);
 
         function getErrorDesc(reqMsg) {
