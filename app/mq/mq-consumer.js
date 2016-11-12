@@ -1,56 +1,54 @@
-(function () {
-    module.exports = (createdChannel, amqpQueue) => {
-        const subscribers = {};
-        let channelInstance;
+module.exports = (createdChannel, amqpQueue) => {
+    const subscribers = {};
+    let channelInstance;
 
-        createdChannel
-            .then((channel) => {
-                channelInstance = channel;
-                return channelInstance.assertQueue(amqpQueue);
-            })
-            .then((ok) => {
-                console.info('MQ Event. Asserting on consumering in', amqpQueue, 'queue. ok', ok);
+    createdChannel
+        .then((channel) => {
+            channelInstance = channel;
+            return channelInstance.assertQueue(amqpQueue);
+        })
+        .then((ok) => {
+            console.info('MQ Event. Asserting on consumering in', amqpQueue, 'queue. ok.queue:', ok.queue);
 
-                channelInstance.consume(amqpQueue, (msg) => {
-                    if (msg == null) {
-                        console.error('ERROR!', 'Queue', amqpQueue, 'consuming was canceled.');
-                    }
-                    channelInstance.ack(msg);
+            channelInstance.consume(amqpQueue, (msg) => {
+                if (msg == null) {
+                    console.error('ERROR!', 'Queue', amqpQueue, 'consuming was canceled.');
+                }
+                channelInstance.ack(msg);
 
-                    const content = JSON.parse(msg.content);
-                    console.info('MQ Event. Consumered in', amqpQueue, 'queue. ok', ok);
-                    console.log('\t message content', content);
-                    console.log('\t subscribers id-s', Object.keys(subscribers));
+                const content = JSON.parse(msg.content);
+                console.info('MQ Event. Consumered in', amqpQueue, 'queue. ok', ok);
+                console.log('\t message content', content);
+                console.log('\t subscribers id-s', Object.keys(subscribers));
 
 
-                    Object.keys(subscribers)
-                        .forEach((handlerId) => {
-                            console.info('Server MQ. Processing subscriber with handlerId ', handlerId, 'on', amqpQueue, 'queue');
-                            console.info('\t call with content', content);
-                            subscribers[handlerId](msg);
-                        });
-                });
+                Object.keys(subscribers)
+                    .forEach((handlerId) => {
+                        console.info('Server MQ. Processing subscriber with handlerId ', handlerId, 'on', amqpQueue, 'queue');
+                        console.info('\t call with content', content);
+                        subscribers[handlerId](msg);
+                    });
             });
+        });
 
-        function subscribe(handler) {
-            const id = Date.now() + '_' + Math.ceil(Math.random() * 1000);
-            subscribers[id] = handler;
+    function subscribe(handler) {
+        const id = Date.now() + '_' + Math.ceil(Math.random() * 1000);
+        subscribers[id] = handler;
 
-            console.info('Server MQ. Subscribed handler in ', amqpQueue, 'queue with id', id);
-            return id;
-        }
-        function unsubscribe(handlerId) {
-            if (subscribers[handlerId]) {
-                console.info('Server MQ. Unsubscribed handler in ', amqpQueue, 'queue with handlerId', handlerId);
-                return delete subscribers[handlerId];
-            }
-
-            return false;
-        }
-
-        return {
-            subscribe,
-            unsubscribe
-        };
+        console.info('Server MQ. Subscribed handler in ', amqpQueue, 'queue with id', id);
+        return id;
     }
-})();
+    function unsubscribe(handlerId) {
+        if (subscribers[handlerId]) {
+            console.info('Server MQ. Unsubscribed handler in ', amqpQueue, 'queue with handlerId', handlerId);
+            return delete subscribers[handlerId];
+        }
+
+        return false;
+    }
+
+    return {
+        subscribe,
+        unsubscribe
+    };
+}
