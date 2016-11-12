@@ -1,7 +1,10 @@
 module.exports = function () {
     const configuration = require('./configuration');
 
-    const mq = require('./mq/mq')(configuration);
+    const mq = require('./mq/mq')(configuration.amqpURL);
+    const consumeReq = mq.channelConsumer(configuration.amqpQueueRequest);
+    const publishRes = mq.channelPublisher(configuration.amqpQueueResponse);
+
     const mongoose = require('mongoose');
 
     const model = require('./database/model')(mongoose);
@@ -21,7 +24,7 @@ module.exports = function () {
     });
 
     console.info('Server MQ. Subscribed on defined requestQueue.');
-    mq.requestQueue.subscribe((reqMsg) => {
+    consumeReq.subscribe((reqMsg) => {
         const res = {
             error: false,
             errorDesc: '',
@@ -41,7 +44,7 @@ module.exports = function () {
         // TODO - implement logic with filling res.data (and include code above in it)
 
         console.info('Server MQ. Publishing into responseQueue message:', res);
-        mq.responseQueue.publish(res);
+        publishRes(res);
 
         function getErrorDesc(reqMsg) {
             if (reqMsg) {

@@ -15,13 +15,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
-const mq = require('./mq/mq')(configuration);
+const mq = require('./mq/mq')(configuration.amqpURL);
+const consumeRes = mq.channelConsumer(configuration.amqpQueueResponse);
+const publishReq = mq.channelPublisher(configuration.amqpQueueRequest);
+
+const mqInterface = {
+    requestQueue: {
+        publish: publishReq
+    },
+    responseQueue: {
+        subscribe: consumeRes.subscribe,
+        unsubscribe: consumeRes.unsubscribe
+    }
+};
 
 // mq.requestQueue.subscribe((reqMsg) => {
 //     console.log('In responseQueue consume handler. msg.content.toString()', reqMsg.content.toString());
 //     mq.responseQueue.publish('resent ' + reqMsg.content.toString());
 // });
 
-require('./routes')(app, mq);
+require('./routes')(app, mqInterface);
 
 app.listen(port);

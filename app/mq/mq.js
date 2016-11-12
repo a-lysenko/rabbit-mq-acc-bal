@@ -1,5 +1,5 @@
-module.exports = function (configuration) {
-    const open = require('amqplib').connect(configuration.amqpURL);
+module.exports = function (amqpURL) {
+    const open = require('amqplib').connect(amqpURL);
     const createdChannel = open
         .then((conn) => {
             return conn.createChannel();
@@ -10,29 +10,20 @@ module.exports = function (configuration) {
         });
 
     const mqPublisher = require('./mq-publisher');
-    const mqPublisherToChannel = mqPublisher.bind(mqPublisher, createdChannel);
-
-    const publishReq = mqPublisher(createdChannel, configuration.amqpQueueRequest);
-    const publishRes = mqPublisher(createdChannel, configuration.amqpQueueResponse);
-
     const mqConsumer = require('./mq-consumer');
-    const mqConsumerToChannel = mqPublisher.bind(mqPublisher, createdChannel);
-
-    const consumeReq = mqConsumer(createdChannel, configuration.amqpQueueRequest);
-    const consumeRes = mqConsumer(createdChannel, configuration.amqpQueueResponse);
 
     return {
         createdChannel,
-        requestQueue: {
-            publish: publishReq,
-            subscribe: consumeReq.subscribe,
-            unsubscribe: consumeReq.unsubscribe
-        },
-        responseQueue: {
-            publish: publishRes,
-            subscribe: consumeRes.subscribe,
-            unsubscribe: consumeRes.unsubscribe
-        }
+        channelPublisher,
+        channelConsumer
+    };
+
+    function channelPublisher(queueName) {
+        return mqPublisher(createdChannel, queueName);
+    }
+
+    function channelConsumer(queueName) {
+        return mqConsumer(createdChannel, queueName);
     }
 };
 
