@@ -53,7 +53,7 @@
             value: nameInput.val()
         });
         updateFilter(hotelFilter, {
-            name: 'desc',
+            name: 'description',
             value: descInput.val()
         }, {
             includes: true
@@ -65,9 +65,7 @@
             type: 'number'
         });
 
-        $.get('/get_hotels', {
-            filter: hotelFilter
-        })
+        $.get('/get_hotels', hotelFilter)
             .done(updateSearchresults);
 
         function updateFilter(filter, item, options) {
@@ -88,7 +86,7 @@
             }
         }
 
-        function updateSearchresults(hotels) {
+        function updateSearchresults({data: hotels}) {
             updatedSearchresultsHeader(hotels.length);
 
             updateSearchresultsCollection(hotels);
@@ -218,12 +216,12 @@
 
     function createNewHotel() {
         const name = $('#new-hotel-name').val();
-        const desc = $('#new-hotel-desc').val();
+        const description = $('#new-hotel-desc').val();
         const rate = 1;
 
         $.post('/add_hotel', {
             name,
-            desc,
+            description,
             rate
         })
             .done(() => {
