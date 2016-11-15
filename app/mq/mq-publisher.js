@@ -14,6 +14,7 @@ module.exports = (createdChannel, amqpQueue) => {
                 const stringifiedMsg = JSON.stringify(message);
 
                 return channelInstance.sendToQueue(amqpQueue, new Buffer(stringifiedMsg));
+                // return channelInstance.publish('rk', amqpQueue, new Buffer(stringifiedMsg));
             });
     }
 

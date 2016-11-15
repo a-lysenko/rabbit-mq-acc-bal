@@ -98,6 +98,36 @@ module.exports = function (app, mq) {
         })
     });
 
+    app.get('/get_rate/:id', (req, res) => {
+        // TODO - this endpoint uses the same queue as endpoint 'add_hotel' what can lead to an error
+        // so queues should be splitted. Probably by some identifier in scope of the same name although
+        let {id} = req.query;
+
+        mq.requestQueue.publish({
+            action: 'get-rate',
+            data: {
+                id
+            }
+        })
+            .then((bufferIsAllowed) => {
+                if (!bufferIsAllowed) {
+                    console.log('Routes. Error! Queue buffer is full on getting rate!');
+
+                    res.status(503).send('Queue buffer is full!');
+                }
+            });
+
+        const handlerId = mq.rate.subscribe((msg) => {
+            console.info('Response on route "get_rate". Called to response with message props:');
+            console.info('\t msg.fields:', msg.fields);
+            console.info('\t msg.content:', msg.content);
+            res.status(200).json(JSON.parse(msg.content));
+
+            console.log('handlerId', handlerId);
+            mq.rate.unsubscribe(handlerId);
+        });
+    });
+
     app.get('*', function (req, res) {
         res.sendFile(process.cwd() + '/public/index.html'); // load our public/index.html file
     });

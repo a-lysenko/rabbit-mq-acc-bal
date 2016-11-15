@@ -5,9 +5,13 @@ module.exports = function () {
     const consumeReq = mq.channelConsumer(configuration.amqpQueueRequest);
     const publishRes = mq.channelPublisher(configuration.amqpQueueResponse);
 
+    const consumeReqRate = mq.channelConsumer(configuration.amqpQueueRequestRate);
+    const publishResRate = mq.channelPublisher(configuration.amqpQueueResponseRate);
+
     const handledActions = {
         save: 'save',
-        get: 'get'
+        get: 'get',
+        getRate: 'get-rate'
     };
 
     const mongoose = require('mongoose');
@@ -66,7 +70,7 @@ module.exports = function () {
                     console.log('Search filter', data);
                     let {name, description, rate} = data;
                     const filter = {};
-                    // TODO - query contain some unused mete data related to fields. Use it
+                    // TODO - query contain some unused meta data related to fields. Use it
 
                     if (name) {
                         filter.name = new RegExp(name.value);
@@ -81,7 +85,7 @@ module.exports = function () {
                     // NOTE - idea not to get rate together with hotels but implement separate request
                     // and demonstrate rabbitMQ functionality on cuncurrent flow
                     model.Hotel.find(filter)
-                        .select('-rate')
+                        .select('-rate') // synthetic ignoring field with required data
                         .then((foundHotels) => {
                             console.log('Server MQ. Hotel successfully got. foundHotels:', foundHotels);
                             res.data = foundHotels;
@@ -92,6 +96,22 @@ module.exports = function () {
                             res.dbError = true;
                             res.dbErrorDesc = err;
                             publishRes(res);
+                        });
+                    break;
+                case handledActions.getRate:
+                    // NOTE - it continues an idea not to get rate together with hotels but implement separate request
+                    // and demonstrate rabbitMQ functionality on concurrent flow
+                    model.Hotel.findById(data.id, 'rate')
+                        .then((foundRate) => {
+                            console.log('Server MQ. Rate successfully got. foundRate:', foundRate);
+                            res.data = foundRate;
+                            publishResRate(res);
+                        })
+                        .catch((err) => {
+                            console.error('Server MQ. Error occurred on get rate by id:', err);
+                            res.dbError = true;
+                            res.dbErrorDesc = err;
+                            publishResRate(res);
                         });
                     break;
             }

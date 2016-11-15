@@ -10,7 +10,7 @@ const configuration = require('./configuration');
 app.use(express.static(__dirname + '/../public'));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({extended: false}));
 
 // parse application/json
 app.use(bodyParser.json());
@@ -19,6 +19,9 @@ const mq = require('./mq/mq')(configuration.amqpURL);
 const consumeRes = mq.channelConsumer(configuration.amqpQueueResponse);
 const publishReq = mq.channelPublisher(configuration.amqpQueueRequest);
 
+const consumeResRate = mq.channelConsumer(configuration.amqpQueueResponseRate);
+const publishReqRate = mq.channelPublisher(configuration.amqpQueueRequestRate);
+
 const mqInterface = {
     requestQueue: {
         publish: publishReq
@@ -26,6 +29,11 @@ const mqInterface = {
     responseQueue: {
         subscribe: consumeRes.subscribe,
         unsubscribe: consumeRes.unsubscribe
+    },
+    rate: {
+        publish: publishReqRate,
+        subscribe: consumeResRate.subscribe,
+        unsubscribe: consumeResRate.unsubscribe
     }
 };
 

@@ -129,7 +129,7 @@
 
                     fillRate(rateElem, hotel.rate);
 
-                    detailsBtnElem.attr('item-id', hotel.id);
+                    detailsBtnElem.attr('item-id', hotel._id);
                     detailsBtnElem.click((event) => {
                         const itemId = $(event.target).attr('item-id');
                         getHotel(itemId);
@@ -140,10 +140,11 @@
     }
 
     function getHotel(id) {
-        $.get(`/get_hotel/${id}`)
+        $.get(`/get_rate/${id}`)
             .done(updateCard);
 
         function updateCard(hotel) {
+            console.log('Hotel', hotel);
             if (hotel.id) {
                 showHotelCard();
                 showHotel(hotel);
