@@ -140,12 +140,11 @@
     }
 
     function getHotel(id) {
-        $.get(`/get_rate/${id}`)
+        $.get(`/get_hotel/${id}`)
             .done(updateCard);
 
-        function updateCard(hotel) {
-            console.log('Hotel', hotel);
-            if (hotel.id) {
+        function updateCard({data: hotel}) {
+            if (hotel._id) {
                 showHotelCard();
                 showHotel(hotel);
             } else {
@@ -165,8 +164,8 @@
 
                 fillRate(rateElem, hotel.rate);
 
-                idElem.text(hotel.id);
-                idElem.attr('hotel-id', hotel.id);
+                idElem.text(hotel._id);
+                idElem.attr('hotel-id', hotel._id);
             }
         }
     }

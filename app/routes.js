@@ -1,44 +1,32 @@
 module.exports = function (app, mq) {
-    // TODO remove mock after related implementation
-    const mockHotels = [
-        {
-            id: Math.random().toString().slice(-6),
-            name: 'Hotel 1',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ' +
-            'cupiditate totam quidem? Cumque praesentium incidunt cum quis reprehenderit ' +
-            'aspernatur velit aut recusandae alias similique aliquid, nulla accusamus officiis ' +
-            'repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil eveniet, debitis ' +
-            'dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique optio!',
-            rate: 3
-        },
-        {
-            id: Math.random().toString().slice(-6),
-            name: 'Hotel 2',
-            description: 'Lorem',
-            rate: 3
-        },
-        {
-            id: Math.random().toString().slice(-6),
-            name: 'Hotel 1-2-3',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci ' +
-            'cupiditate totam quidem? Cumque praesentium incidunt cum quis reprehenderit ' +
-            'aspernatur velit aut recusandae alias similique aliquid, nulla accusamus officiis ' +
-            'repellat explicabo porro ex! Similique, dolorum! Tempore dolorem, nihil eveniet, debitis ' +
-            'dolorum, animi deserunt alias, nobis incidunt libero quae cupiditate similique optio!',
-            rate: 5
-        }
-    ];
-
     app.get('/', (req, res) => {
         res.send('hello world');
     });
 
     app.get('/get_hotel/:id', (req, res) => {
-        // TODO replace a mock with real implementation
-        const mockHotel = mockHotels.find((hotel) => {
-                return hotel.id === req.params.id;
-            }) || {};
-        res.status(200).json(mockHotel);
+        mq.requestQueue.publish({
+            action: 'get-hotel',
+            data: {
+                id: req.params.id
+            }
+        })
+            .then((bufferIsAllowed) => {
+                if (!bufferIsAllowed) {
+                    console.log('Routes. Error! Queue buffer is full on getting rate!');
+
+                    res.status(503).send('Queue buffer is full!');
+                }
+            });
+
+        const handlerId = mq.responseQueue.subscribe((msg) => {
+            console.info('Response on route "get_hotel - by id". Called to response with message props:');
+            console.info('\t msg.fields:', msg.fields);
+            console.info('\t msg.content:', msg.content);
+            res.status(200).json(JSON.parse(msg.content));
+
+            console.log('handlerId', handlerId);
+            mq.responseQueue.unsubscribe(handlerId);
+        });
     });
 
     app.get('/get_hotels', (req, res) => {
@@ -101,12 +89,11 @@ module.exports = function (app, mq) {
     app.get('/get_rate/:id', (req, res) => {
         // TODO - this endpoint uses the same queue as endpoint 'add_hotel' what can lead to an error
         // so queues should be splitted. Probably by some identifier in scope of the same name although
-        let {id} = req.query;
 
         mq.requestQueue.publish({
             action: 'get-rate',
             data: {
-                id
+                id: req.params.id
             }
         })
             .then((bufferIsAllowed) => {

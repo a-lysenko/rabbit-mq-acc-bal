@@ -11,7 +11,8 @@ module.exports = function () {
     const handledActions = {
         save: 'save',
         get: 'get',
-        getRate: 'get-rate'
+        getRate: 'get-rate',
+        getHotel: 'get-hotel'
     };
 
     const mongoose = require('mongoose');
@@ -112,6 +113,22 @@ module.exports = function () {
                             res.dbError = true;
                             res.dbErrorDesc = err;
                             publishResRate(res);
+                        });
+                    break;
+                case handledActions.getHotel:
+                    // NOTE - it continues an idea not to get rate together with hotels but implement separate request
+                    // and demonstrate rabbitMQ functionality on concurrent flow
+                    model.Hotel.findById(data.id)
+                        .then((foundHotel) => {
+                            console.log('Server MQ. Hotel successfully got. foundRate:', foundHotel);
+                            res.data = foundHotel;
+                            publishRes(res);
+                        })
+                        .catch((err) => {
+                            console.error('Server MQ. Error occurred on get hotel by id:', err);
+                            res.dbError = true;
+                            res.dbErrorDesc = err;
+                            publishRes(res);
                         });
                     break;
             }
