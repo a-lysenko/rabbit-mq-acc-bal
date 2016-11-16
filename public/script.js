@@ -66,7 +66,8 @@
         });
 
         $.get('/get_hotels', hotelFilter)
-            .done(updateSearchresults);
+            .done(updateSearchresults)
+            .done(getRates);
 
         function updateFilter(filter, item, options) {
             options = options || {};
@@ -112,6 +113,7 @@
                 hotels.forEach((hotel) => {
                     const item = itemTemplate.clone();
                     item.removeAttr('id');
+                    item.attr('item', hotel._id);
 
                     fillHotelCard(item, hotel);
 
@@ -121,13 +123,10 @@
                 function fillHotelCard(hotelCard, hotel) {
                     const nameElem = hotelCard.find('[item-name]');
                     const descElem = hotelCard.find('[item-desc]');
-                    const rateElem = hotelCard.find('[item-rate]');
                     const detailsBtnElem = hotelCard.find('[item-id]');
 
                     nameElem.text(hotel.name);
                     descElem.text(hotel.description);
-
-                    fillRate(rateElem, hotel.rate);
 
                     detailsBtnElem.attr('item-id', hotel._id);
                     detailsBtnElem.click((event) => {
@@ -135,6 +134,34 @@
                         getHotel(itemId);
                     });
                 }
+            }
+        }
+
+        function getRates({data: hotels}) {
+            const hotelIdBatch = hotels.map((hotel) => {
+                return hotel._id;
+            });
+
+            $.get('/get_rate', {
+                idBatch: hotelIdBatch
+            })
+                .done(updateHotelRates);
+
+            function updateHotelRates({data: rateMap}) {
+
+                // // TODO - NOTE: test
+                // if (rateMap.time) {
+                //     console.info('rateMap.time', rateMap.time);
+                //     delete rateMap.time;
+                // }
+
+                const collection = $('#hotel-searchresults-collection');
+                Object.keys(rateMap)
+                    .forEach((hotelId) => {
+                        const rateElem = collection.find(`[item=${hotelId}] [item-rate]`);
+
+                        fillRate(rateElem, rateMap[hotelId]);
+                    });
             }
         }
     }
