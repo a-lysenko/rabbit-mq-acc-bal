@@ -14,7 +14,6 @@ module.exports = (createdChannel, amqpQueue) => {
                 if (msg == null) {
                     console.error('ERROR!', 'Queue', amqpQueue, 'consuming was canceled.');
                 }
-                channelInstance.ack(msg);
 
                 const content = JSON.parse(msg.content);
                 console.info('MQ Event. Consumered in', amqpQueue, 'queue. ok', ok);
@@ -28,6 +27,8 @@ module.exports = (createdChannel, amqpQueue) => {
                         console.info('\t call with content', content);
                         subscribers[handlerId](msg);
                     });
+
+                channelInstance.ack(msg);
             });
         });
 
