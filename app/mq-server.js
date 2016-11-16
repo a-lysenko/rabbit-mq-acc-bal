@@ -35,7 +35,7 @@ module.exports = function () {
 
     });
 
-    console.info('Server MQ. Subscribed on defined requestQueue.');
+    console.info(`Server MQ. Subscribed on defined ${configuration.amqpQueueRequest} queue.`);
     consumeReq.subscribe((reqMsg) => {
         const res = {
             reqError: false,
@@ -84,7 +84,7 @@ module.exports = function () {
                     }
 
                     // NOTE - idea not to get rate together with hotels but implement separate request
-                    // and demonstrate rabbitMQ functionality on cuncurrent flow
+                    // and demonstrate rabbitMQ functionality on concurrent flow
                     model.Hotel.find(filter)
                         .select('-rate') // synthetic ignoring field with required data
                         .then((foundHotels) => {
@@ -97,22 +97,6 @@ module.exports = function () {
                             res.dbError = true;
                             res.dbErrorDesc = err;
                             publishRes(res);
-                        });
-                    break;
-                case handledActions.getRate:
-                    // NOTE - it continues an idea not to get rate together with hotels but implement separate request
-                    // and demonstrate rabbitMQ functionality on concurrent flow
-                    model.Hotel.findById(data.id, 'rate')
-                        .then((foundRate) => {
-                            console.log('Server MQ. Rate successfully got. foundRate:', foundRate);
-                            res.data = foundRate;
-                            publishResRate(res);
-                        })
-                        .catch((err) => {
-                            console.error('Server MQ. Error occurred on get rate by id:', err);
-                            res.dbError = true;
-                            res.dbErrorDesc = err;
-                            publishResRate(res);
                         });
                     break;
                 case handledActions.getHotel:
@@ -150,4 +134,54 @@ module.exports = function () {
             }
         }
     });
+
+    console.info(`Server MQ. Subscribed on defined ${configuration.amqpQueueRequestRate} queue`);
+    consumeReqRate.subscribe((reqMsg) => {
+        const res = {
+            reqError: false,
+            reqErrorDesc: '',
+            dbError: false,
+            dbErrorDesc: '',
+            data: {}
+        };
+
+        console.log('Process request queue.');
+
+        if (reqMsg && Buffer.isBuffer(reqMsg.content)) {
+            const {action, data}  = JSON.parse(reqMsg.content);
+
+            if (action === handledActions.getRate) {
+                // NOTE - it continues an idea not to get rate together with hotels but implement separate request
+                // and demonstrate rabbitMQ functionality on concurrent flow
+                model.Hotel.findById(data.id, 'rate')
+                    .then((foundRate) => {
+                        console.log('Server MQ. Rate successfully got. foundRate:', foundRate);
+                        res.data[data.id] = foundRate;
+                        publishResRate(res);
+                    })
+                    .catch((err) => {
+                        console.error('Server MQ. Error occurred on get rate by id:', err);
+                        res.dbError = true;
+                        res.dbErrorDesc = err;
+                        publishResRate(res);
+                    });
+            }
+
+        } else {
+            res.reqError = true;
+            res.reqErrorDesc = getErrorDesc(reqMsg);
+            console.error('Server MQ. Publishing error message into responseQueue message:', res);
+            publishResRate(res);
+        }
+
+        function getErrorDesc(reqMsg) {
+            if (reqMsg) {
+                if (!Buffer.isBuffer(reqMsg.content)) {
+                    return 'Request message is not a buffer';
+                }
+            } else {
+                return 'Empty request message';
+            }
+        }
+    })
 };
