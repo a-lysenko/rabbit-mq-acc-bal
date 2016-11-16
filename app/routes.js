@@ -42,27 +42,16 @@ module.exports = function (app, mq) {
         subscribe(mq.responseQueue, res, 'add hotel');
     });
 
-    app.get('/get_rate/:id', (req, res) => {
+    app.get('/get_rate', (req, res) => {
         // TODO - this endpoint uses the same queue as endpoint 'add_hotel' what can lead to an error
         // so queues should be splitted. Probably by some identifier in scope of the same name although
-        const content = {
-            action: 'get-rate',
-            data: {
-                id: req.params.id
-            }
-        };
-
-        publish(mq.requestQueue, content, res, 'get rate by id');
-        subscribe(mq.rate, res, 'get rate by id');
-    });
-
-    app.get('/get_rate/:idBatch', (req, res) => {
-        // TODO - this endpoint uses the same queue as endpoint 'add_hotel' what can lead to an error
-        // so queues should be splitted. Probably by some identifier in scope of the same name although
-        const {idBatch} = req.params;
+        const {idBatch} = req.query;
         const resData = {};
 
-        idBatch.forEach((id, key) => {
+        // NOTE: test
+        let timeStart;
+
+        idBatch.forEach((id) => {
             const content = {
                 action: 'get-rate',
                 data: {
@@ -75,18 +64,26 @@ module.exports = function (app, mq) {
                     if (!bufferIsAllowed) {
                         handleBufferIsFullError(res, `get rates by id batch. id: ${id}`);
                     }
+
+                    timeStart = Date.now();
                 });
         });
 
-        subscribe(mq.rate, res, 'get rates by id batch');
         const handlerId = mq.rate.subscribe((msg) => {
             logSubscribeHandling(msg, 'get rates by id batch');
 
             const {data: parsedData} = JSON.parse(msg.content);
             Object.assign(resData, parsedData);
 
-            if (Object.keys(resData).length) {
-                res.status(200).json(resData);
+            // NOTE: test
+            if (Object.keys(resData).length === idBatch.length) {
+            // resData.time = resData.time || {};
+            // resData.time[Object.keys(parsedData)[0]] = Date.now() - timeStart;
+            //
+            // if (Object.keys(resData).length > idBatch.length) {
+                res.status(200).json({
+                    data: resData
+                });
                 mq.rate.unsubscribe(handlerId);
             }
         });
