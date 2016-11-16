@@ -156,7 +156,13 @@ module.exports = function () {
                 model.Hotel.findById(data.id, 'rate')
                     .then((foundRate) => {
                         console.log('Server MQ. Rate successfully got. foundRate:', foundRate);
-                        res.data[data.id] = foundRate;
+                        res.data[data.id] = foundRate.rate;
+
+                        // // NOTE: test. Synthetic delay increasing
+                        // for (let i = 0; i < 1e9;) {
+                        //     i++;
+                        // };
+
                         publishResRate(res);
                     })
                     .catch((err) => {
