@@ -1,2 +1,4 @@
 require('./app/mq-server')();
-require('./app/server');
+const server = require('./app/server');
+
+module.exports = server;

@@ -149,11 +149,11 @@
 
             function updateHotelRates({data: rateMap}) {
 
-                // // TODO - NOTE: test
-                // if (rateMap.time) {
-                //     console.info('rateMap.time', rateMap.time);
-                //     delete rateMap.time;
-                // }
+                // TODO - NOTE: test
+                if (rateMap.time) {
+                    console.info('rateMap.time', rateMap.time);
+                    delete rateMap.time;
+                }
 
                 const collection = $('#hotel-searchresults-collection');
                 Object.keys(rateMap)

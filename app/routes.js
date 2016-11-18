@@ -1,6 +1,6 @@
 module.exports = function (app, mq) {
-    app.get('/', (req, res) => {
-        res.send('hello world');
+    app.get('/hello', (req, res) => {
+        res.send('hello world!');
     });
 
     app.get('/get_hotel/:id', (req, res) => {
@@ -76,11 +76,11 @@ module.exports = function (app, mq) {
             Object.assign(resData, parsedData);
 
             // NOTE: test
-            if (Object.keys(resData).length === idBatch.length) {
-            // resData.time = resData.time || {};
-            // resData.time[Object.keys(parsedData)[0]] = Date.now() - timeStart;
-            //
-            // if (Object.keys(resData).length > idBatch.length) {
+            resData.time = resData.time || {};
+            resData.time[Object.keys(parsedData)[0]] = Date.now() - timeStart;
+
+            // if (Object.keys(resData).length === idBatch.length) {
+            if (Object.keys(resData).length > idBatch.length) {
                 res.status(200).json({
                     data: resData
                 });

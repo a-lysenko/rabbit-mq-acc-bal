@@ -45,3 +45,5 @@ const mqInterface = {
 require('./routes')(app, mqInterface);
 
 app.listen(port);
+
+module.exports = app;
